@@ -32,10 +32,10 @@ namespace CromulentBisgetti.ContainerPacking.Entities
 		/// </value>
 		[DataMember]
 		public int ContainerID { get; set; }
-
+		
 		[DataMember]
 		public List<AlgorithmPackingResult> AlgorithmPackingResults { get; set; }
 
 		#endregion Public Properties
 	}
-}
+	}

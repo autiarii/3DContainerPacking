@@ -125,7 +125,7 @@ var ViewModel = function () {
 		self.NewItemToPack.Length('');
 		self.NewItemToPack.Width('');
 		self.NewItemToPack.Height('');
-		self.NewItemToPack.Quantity('');
+		self.NewItemToPack.Quantity('0');
 	};
 
 	self.RemoveItemToPack = function (item) {
@@ -267,6 +267,27 @@ var ViewModel = function () {
 		scene.remove( selectedObject );
 		self.LastItemRenderedIndex(self.LastItemRenderedIndex() - 1);
 	};
+	
+	
+	self.PackItemInRenderFastForward = async function (){
+		while(!self.AreAllItemsPacked()){
+			self.PackItemInRender()
+			await self.sleep(250)
+
+		}
+	}
+
+	self.UnpackItemInRenderFastBackward = async function(){
+		while(self.AreItemsPacked()){
+			self.UnpackItemInRender()
+			await self.sleep(250)
+		}
+	}
+	
+	self.sleep = function(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 };
 
 var ItemToPack = function () {
@@ -275,7 +296,7 @@ var ItemToPack = function () {
 	this.Length = '';
 	this.Width = '';
 	this.Height = '',
-	this.Quantity = '';
+	this.Quantity = '0';
 }
 
 var Container = function () {

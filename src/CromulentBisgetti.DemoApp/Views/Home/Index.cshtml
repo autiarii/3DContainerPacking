@@ -111,7 +111,6 @@
                                     <th class="data-column text-center">L</th>
                                     <th class="data-column text-center">W</th>
                                     <th class="data-column text-center">H</th>
-                                    <th class="data-column text-center">Qty</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -122,7 +121,7 @@
                                     <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: Length" /></td>
                                     <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: Width" /></td>
                                     <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: Height" /></td>
-                                    <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: Quantity" /></td>
+                                    <td class="data-column text-center" hidden><input type="number" class="form-control input-sm text-center" data-bind="value: Quantity" value="0" hidden/></td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -136,7 +135,7 @@
                                 <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: NewItemToPack.Length" /></td>
                                 <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: NewItemToPack.Width" /></td>
                                 <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: NewItemToPack.Height" /></td>
-                                <td class="data-column text-center"><input type="text" class="form-control input-sm text-center" data-bind="value: NewItemToPack.Quantity" /></td>
+                                <td class="data-column text-center" hidden><input type="number" class="form-control input-sm text-center" data-bind="value: NewItemToPack.Quantity" hidden value="1"/></td>
                                 <td></td>
                             </tr>
                         </table>
@@ -168,8 +167,7 @@
                                     <th class="algorithm-name-column">Algorithm<br />Name</th>
                                     <th class="data-column text-center">Pack Time<br />(ms)</th>
                                     <th class="data-column text-center"><div data-toggle="tooltip" title="% of container volume packed with items">% Cont.<br />Used</div></th>
-                                    <th class="data-column text-center"># Items<br />Packed</th>
-                                    <th class="data-column text-center"># Items<br />Unpacked</th>
+                                    <th class="data-column text-center"># Items<br />Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -205,17 +203,11 @@
                                     <td class="data-column">
                                         <table style="width: 100%">
                                             <tbody data-bind="foreach: AlgorithmPackingResults">
-                                                <tr class="text-center"><td data-bind="css: UnpackedItems.length == 0 && PackedItems.length != 0 ? 'bg-success' : ''"><p class="form-control-static" data-bind="text: PackedItems.length"></p></td></tr>
+                                                <tr class="text-center"><td data-bind="css: UnpackedItems.length == 0 && PackedItems.length != 0 ? 'bg-success' : ''"><p class="form-control-static" data-bind="text: TotalItemsInContainer"></p></td></tr>
                                             </tbody>
                                         </table>
                                     </td>
-                                    <td class="data-column">
-                                        <table style="width: 100%">
-                                            <tbody data-bind="foreach: AlgorithmPackingResults">
-                                                <tr class="text-center"><td data-bind="css: UnpackedItems.length == 0 && PackedItems.length != 0 ? 'bg-success' : ''"><p class="form-control-static" data-bind="text: UnpackedItems.length"></p></td></tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
+                                    
                                     <td class="data-column text-right">
                                         <table style="margin-left: auto;">
                                             <tbody data-bind="foreach: AlgorithmPackingResults">
@@ -249,8 +241,10 @@
             <div class="modal-content" style="margin-bottom: 30px;">
                 <div id="drawing-container" style="margin-top: 30px; text-align: center;"></div>
                 <div class="text-center">
+                    <button class="btn btn-default" data-bind="click: UnpackItemInRenderFastBackward, enable: AreItemsPacked()"><span class="glyphicon glyphicon-backward"></span></button>
                     <button class="btn btn-default" data-bind="click: UnpackItemInRender, enable: AreItemsPacked()"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     <button class="btn btn-default" data-bind="click: PackItemInRender, disable: AreAllItemsPacked()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                    <button class="btn btn-default" data-bind="click: PackItemInRenderFastForward, disable: AreAllItemsPacked()"><span class="glyphicon glyphicon-forward"></span></button>
                 </div>
             </div>
         </div>

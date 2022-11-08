@@ -14,7 +14,7 @@ namespace CromulentBisgetti.DemoApp.Controllers
         [HttpPost]
         public ActionResult<List<ContainerPackingResult>> Post([FromBody]ContainerPackingRequest request)
         {
-            return PackingService.Pack(request.Containers, request.ItemsToPack, request.AlgorithmTypeIDs);
+            return PackingService.PackTotal(request.Containers, request.ItemsToPack, request.AlgorithmTypeIDs);
         }
     }
 }

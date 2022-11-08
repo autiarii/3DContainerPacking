@@ -50,7 +50,10 @@ namespace CromulentBisgetti.ContainerPacking.Entities
 		/// </value>
 		[DataMember]
 		public long PackTimeInMilliseconds { get; set; }
-
+		
+		[DataMember]
+		public int TotalItemsInContainer { get; set; }
+		
 		/// <summary>
 		/// Gets or sets the percent of container volume packed.
 		/// </summary>

@@ -74,6 +74,59 @@ namespace CromulentBisgetti.ContainerPacking
 			return result;
 		}
 
+		public static List<ContainerPackingResult> PackTotal(List<Container> containers,
+			List<Item> itemsToPack,
+			List<int> algorithmTypeIDs)
+		{
+			var itemsCount = 0;
+			var min = 0;
+			var max = 2;
+			var power = 1;
+			List<ContainerPackingResult> result = null;
+			while (true)
+			{
+				List<Item> items = itemsToPack.Select(x => new Item(x.ID, x.Dim1, x.Dim2, x.Dim3, max)).ToList();
+				var maxResult = PackingService.Pack(containers, items, algorithmTypeIDs);
+
+				if (!maxResult[0].AlgorithmPackingResults[0].IsCompletePack)
+				{
+					break;
+				}
+
+				max = (int)Math.Pow(2, power);
+				power++;
+			}
+			
+			while (min <= max)
+			{
+				var mid = (min + max) / 2;
+				List<Item> items = itemsToPack.Select(x => new Item(x.ID, x.Dim1, x.Dim2, x.Dim3, mid)).ToList();
+
+				result = PackingService.Pack(containers, items, algorithmTypeIDs);
+				if (result[0].AlgorithmPackingResults[0].IsCompletePack)
+				{
+					var nextItem = itemsToPack.Select(x => new Item(x.ID, x.Dim1, x.Dim2, x.Dim3, mid + 1)).ToList();
+					var rightResult = PackingService.Pack(containers, nextItem, algorithmTypeIDs);
+					if (!rightResult[0].AlgorithmPackingResults[0].IsCompletePack)
+					{
+						itemsCount = mid;
+						break;
+					}
+				}
+				if (!result[0].AlgorithmPackingResults[0].IsCompletePack)
+				{
+					max = mid - 1;
+				}
+				else
+				{
+					min = mid + 1;
+				}
+			}
+
+			result[0].AlgorithmPackingResults[0].TotalItemsInContainer = itemsCount;
+			return result;
+		}
+		
 		/// <summary>
 		/// Gets the packing algorithm from the specified algorithm type ID.
 		/// </summary>
