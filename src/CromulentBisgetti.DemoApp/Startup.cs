@@ -32,8 +32,8 @@ namespace CromulentBisgetti.DemoApp
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options =>
+            services.AddMvc(x => x.EnableEndpointRouting = false)
+                .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = null;
                 });
